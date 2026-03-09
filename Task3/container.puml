@@ -1,0 +1,45 @@
+@startuml StandartBankContainer
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(client, "Client", "Standart bank client")
+Person(departmentWorker, "department worker", "Standart bank client")
+Person(callCenterWorker, "call center worker", "Standart bank client")
+
+System_Boundary(standart_bank, "Standart bank") {
+
+    Container(site, "Site", "PHP & React")
+    Container(intertnetBank, "Internet bank", "ASP.NET / .NET Framework 4.5")
+
+    Container(abs, "АБС", "Delphi")
+    
+    Container(sms, "SMS-шлюз", "Java")
+    Container(cc, "call center", "React & Java Spring Boot")
+
+    ContainerDb(msSql, "internet bank DB", "MS SQL")
+    ContainerDb(absDB, "АБС DB", "Oracle")
+    ContainerDb(ccDB, "call center DB", "Postgresql")
+}
+
+Rel(client, departmentWorker, "", "")
+Rel(client, callCenterWorker, "", "")
+Rel(client, site, "Uses", "HTTPS")
+Rel(client, intertnetBank, "Uses", "HTTPS")
+
+Rel(callCenterWorker, cc, "Uses", "HTTPS")
+Rel(departmentWorker, abs, "Uses", "Desktop application")
+
+abs --> cc : "Уведомление о новой заявке"
+abs <-- cc : "Внесение данных о заявке"
+
+site <--> cc : "Внесение данных о клиенте/заявке"
+intertnetBank <--> cc : "Внесение данных о клиенте/заявке"
+
+Rel(abs, sms, "send sms notifications", "HTTPS")
+Rel(site, sms, "send auth codes", "HTTPS")
+Rel(intertnetBank, sms, "send auth codes", "HTTPS")
+
+Rel(intertnetBank, msSql, "Uses", "")
+Rel(abs, absDB, "Uses", "")
+Rel(cc, ccDB, "Uses", "")
+
+@enduml
