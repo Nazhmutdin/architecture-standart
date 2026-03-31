@@ -1,0 +1,18 @@
+@startuml StandartBankContext
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(client, "Client", "Standart bank client")
+Person(departmentWorker, "department worker", "Standart bank client")
+Person(callCenterWorker, "call center worker", "Standart bank client")
+
+System(system, "Standart bank", "Система банка")
+
+System_Ext(extCallCenter, "Партнёрский кол-центр")
+
+Rel(client, system, "пользуется сайтом/интернет-банком")
+Rel(callCenterWorker, client, "связывается с клиентом")
+Rel(departmentWorker, system, "вносит данные клиента или заявок")
+Rel(callCenterWorker, system, "вносит данные о заявках")
+Rel(system, extCallCenter, "уведомляет о новых ставках")
+
+@enduml
